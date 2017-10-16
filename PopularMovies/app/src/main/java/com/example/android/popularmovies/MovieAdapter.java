@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by tp293 on 10/5/2017.
  */
@@ -47,8 +50,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         String fullPosterPath = mMovieData[position][posterPathIndex];
         Picasso.with(mContext)
                 .load(fullPosterPath)
-                .resize(359, 600)
-                .centerCrop()
                 .into(holder.mPosterImageView);
     }
 
@@ -62,11 +63,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final ImageView mPosterImageView;
+        @BindView(R.id.iv_movie_poster) ImageView mPosterImageView;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-            mPosterImageView = itemView.findViewById(R.id.iv_movie_poster);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 

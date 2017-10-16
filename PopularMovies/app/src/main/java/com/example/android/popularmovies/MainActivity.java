@@ -2,6 +2,7 @@ package com.example.android.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,25 +18,31 @@ import android.widget.TextView;
 
 import java.net.URL;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler{
 
-    public RecyclerView mRecyclerView;
-    private TextView mErrorMessageDisplay;
     private MovieAdapter myAdapter;
-    private ProgressBar mProgressBar;
     private GridLayoutManager movieLayoutManager;
 
+    @BindView(R.id.rv_movie_posters) RecyclerView mRecyclerView;
+    @BindView(R.id.tv_error_message_display) TextView mErrorMessageDisplay;
+    @BindView(R.id.pb_loading_indicator) ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_movie_posters);
-        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
-        mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-
-        int postersPerRow = 3;
+        int postersPerRow;
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            postersPerRow = 3;
+        }
+        else{
+            postersPerRow = 4;
+        }
         movieLayoutManager = new GridLayoutManager(this, postersPerRow);
         mRecyclerView.setLayoutManager(movieLayoutManager);
         mRecyclerView.setHasFixedSize(true);
